@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solis — Discover Your STEM Path</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body class="home-page">
+
+  <nav class="navbar">
+    <div class="nav-logo">☀︎ Solis</div>
+    <div class="nav-links">
+      <a href="/quiz">Take the Quiz</a>
+      <a href="/explore">Explore Careers</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-ornament"></div>
+    <div class="hero-left">
+      <div class="hero-kicker">STEM Career Path Explorer 2026</div>
+      <h1 class="hero-title">Find Your<br><em>Solace</em></h1>
+      <p class="hero-slogan">Illuminating your path forward with confidence.</p>
+      <p class="hero-body">Not sure what you want to do? Through this 15 question quiz, find STEM careers that match who you actually are, and learn how you can reach your goals.</p>
+      <div class="hero-actions">
+        <a href="/quiz" class="btn btn-primary">Start the Quiz →</a>
+        <a href="/explore" class="btn btn-ghost">Browse Careers</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="stat-num">6</span><span class="stat-label">Personas</span></div>
+        <div class="hero-stat"><span class="stat-num">18</span><span class="stat-label">Careers</span></div>
+        <div class="hero-stat"><span class="stat-num">15</span><span class="stat-label">Questions</span></div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-persona-item" style="--pc:#4f9cf9"><span class="hpi-dot"></span><div class="hpi-info"><div class="hpi-name">Science & Discovery</div><div class="hpi-tagline">The power of science is limitless</div></div></div>
+      <div class="hero-persona-item" style="--pc:#f97316"><span class="hpi-dot"></span><div class="hpi-info"><div class="hpi-name">Engineering & Creation</div><div class="hpi-tagline">You hold the power to create things</div></div></div>
+      <div class="hero-persona-item" style="--pc:#a855f7"><span class="hpi-dot"></span><div class="hpi-info"><div class="hpi-name">Design & Creativity</div><div class="hpi-tagline">Creating the future you imagine</div></div></div>
+      <div class="hero-persona-item" style="--pc:#22c55e"><span class="hpi-dot"></span><div class="hpi-info"><div class="hpi-name">Data & Strategy</div><div class="hpi-tagline">Finding patterns to solve problems</div></div></div>
+      <div class="hero-persona-item" style="--pc:#ec4899"><span class="hpi-dot"></span><div class="hpi-info"><div class="hpi-name">Health & Medicine</div><div class="hpi-tagline">Science in service of people</div></div></div>
+      <div class="hero-persona-item" style="--pc:#14b8a6"><span class="hpi-dot"></span><div class="hpi-info"><div class="hpi-name">Environment & Social Impact</div><div class="hpi-tagline">Preserving our world with STEM</div></div></div>
+    </div>
+  </section>
+
+  <section class="how-it-works section-glow">
+    <h2 class="section-title">How It Works</h2>
+    <div class="divider"></div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-icon"></span>
+        <span class="step-num">01</span>
+        <h3>Answer 15 Questions</h3>
+        <p>About your interests, work style, values, and what excites you. Don't stress! There's no right or wrong answers.</p>
+      </div>
+      <div class="step">
+        <span class="step-icon"></span>
+        <span class="step-num">02</span>
+        <h3>Discover Your Persona</h3>
+        <p>Get matched to one of our designated 6 STEM personality types.</p>
+      </div>
+      <div class="step">
+        <span class="step-icon"></span>
+        <span class="step-num">03</span>
+        <h3>Explore Your Roadmap</h3>
+        <p>See matching careers with details like salary, education, roadmap, and resources to start today.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="personas-preview section-glow">
+    <div class="section-header">
+      <h2 class="section-title">The 6 Personas</h2>
+      <div class="divider"></div>
+      <p class="section-sub">Every student has a different path. Through Solis, find yours.</p>
+    </div>
+    <div class="persona-grid">
+      <div class="persona-card" style="--pc: #4f9cf9">
+        <span class="hpi-dot dot-lg"></span> 
+        <h3>Science & Discovery</h3>
+        <p>The power of science is limitless</p>
+      </div>
+      <div class="persona-card" style="--pc: #f97316">
+        <span class="hpi-dot dot-lg"></span>
+        <h3>Engineering & Creation</h3>
+        <p>You hold the power to create things</p>
+      </div>
+      <div class="persona-card" style="--pc: #a855f7">
+        <span class="hpi-dot dot-lg"></span>
+        <h3>Design & Creativity</h3>
+        <p>Creating the future you imagine</p>
+      </div>
+      <div class="persona-card" style="--pc: #22c55e">
+        <span class="hpi-dot dot-lg"></span>
+        <h3>Data & Strategy</h3>
+        <p>Finding patterns to solve problems</p>
+      </div>
+      <div class="persona-card" style="--pc: #ec4899">
+        <span class="hpi-dot dot-lg"></span>
+        <h3>Health & Medicine</h3>
+        <p>Science in service of people</p>
+      </div>
+      <div class="persona-card" style="--pc: #14b8a6">
+        <span class="hpi-dot dot-lg"></span>
+        <h3>Environment & Social Impact</h3>
+        <p>Preserving our world with STEM</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-box">
+      <h2>Ready to find your path?</h2>
+      <p>Take your time. Click below to get started.</p>
+      <a href="/quiz" class="btn btn-primary btn-lg">Take the Quiz Now →</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>☀︎ Solis • For students who need solace</p>
+  </footer>
+
+</body>
+</html>

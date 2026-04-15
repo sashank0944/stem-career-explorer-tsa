@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solis — Your Results</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  
+</head>
+<body class="results-page">
+
+  <nav class="navbar" style="--nav-bg: {{ persona.color }}22">
+    <a href="/" class="nav-logo">☀︎ Solis</a>
+    <a href="/quiz" class="btn btn-ghost btn-sm">Retake Quiz</a>
+  </nav>
+
+  <!-- hero result -->
+  <section class="result-hero" style="--persona-color: {{ persona.color }}">
+    <div class="result-hero-bg"></div>
+    <div class="result-hero-content">
+      <div class="result-badge">Your STEM Persona</div>
+      <div class="result-visual">
+          <span class="filter-dot result-dot"></span>
+      </div>
+      <h1 class="result-name">{{ persona.name }}</h1>
+      <p class="result-tagline">"{{ persona.tagline }}"</p>
+      <p class="result-desc">{{ persona.description }}</p>
+      <div class="trait-chips">
+        {% for trait in persona.traits %}
+        <span class="trait-chip">{{ trait }}</span>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- score breakdown -->
+  <section class="score-section">
+    <h2 class="section-title">Your Score Breakdown</h2>
+    <div class="score-bars">
+      {% set score_map = {
+        'investigator': {'name': 'Science & Discovery', 'color': '#4f9cf9'},
+        'builder':       {'name': 'Engineering & Creation', 'color': '#f97316'},
+        'innovator':     {'name': 'Design & Creativity', 'color': '#a855f7'},
+        'analyst':       {'name': 'Data & Strategy', 'color': '#22c55e'},
+        'healer':        {'name': 'Health & Medicine', 'color': '#ec4899'},
+        'changer':       {'name': 'Environment & Social Impact', 'color': '#14b8a6'}
+      } %}
+      {% for key, val in scores.items() %}
+      {% set meta = score_map[key] %}
+      <div class="score-row">
+        <div class="score-label">{{ meta.emoji }} {{ meta.name }}</div>
+        <div class="score-track">
+          <div class="score-fill" style="width: {{ (val / 15 * 100)|round }}%; background: {{ meta.color }}" data-val="{{ val }}"></div>
+        </div>
+        <div class="score-num">{{ val }}/15</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% if second %}
+    <p class="second-persona-note">You also have strong <strong>{{ second.name }}</strong> tendencies!</p>
+    {% endif %}
+  </section>
+
+  <!-- career cards -->
+  <section class="careers-section">
+    <h2 class="section-title">Careers Matched to You</h2>
+    <div class="divider"></div>
+    <p class="section-sub">These three careers align best with your {{ persona.name }} profile.</p>
+    <div class="career-cards">
+      {% for career in careers %} <!-- jinja2 loop ex -->
+      <div class="career-card" style="--cc: {{ persona.color }}">
+
+        <div class="career-header">
+          <span class="career-emoji">{{ career.emoji }}</span>
+          <div>
+            <h3 class="career-title">{{ career.title }}</h3>
+            <div class="career-meta">
+              <span class="salary-badge">💰 {{ career.salary }}</span>
+              <span class="growth-badge">📈 {{ career.growth }}</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="career-desc">{{ career.description }}</p>
+
+        <!--  roadmap -->
+        <div class="career-detail-block">
+          <div class="detail-label">Your Roadmap</div>
+          <div class="roadmap-steps">
+            {% for step in career.roadmap %}
+            <div class="roadmap-step">
+              <div class="rm-dot" style="background: {{ persona.color }}"></div> <!-- color scheme -->
+              <div class="rm-line" {% if loop.last %}style="opacity:0"{% endif %}></div>
+              <div class="rm-text">{{ step }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- hs courses -->
+        <div class="career-detail-block">
+          <div class="detail-label">High School Prep</div>
+          <div class="entry-chips">
+            {% for course in career.hs_courses %}
+            <span class="entry-chip">{{ course }}</span>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- extracurriculars -->
+        <div class="career-detail-block">
+          <div class="detail-label">Extracurriculars &amp; Experience</div>
+          <ul class="detail-list">
+            {% for item in career.extracurriculars %}
+            <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- professional skills -->
+        <div class="career-detail-block">
+          <div class="detail-label">Professional Skills Needed</div>
+          <div class="entry-chips">
+            {% for skill in career.skills %}
+            <span class="entry-chip">{{ skill }}</span>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- entry jobs -->
+        <div class="career-detail-block">
+          <div class="detail-label">Entry-Level Jobs</div>
+          <div class="entry-chips">
+            {% for job in career.entry_jobs %}
+            <span class="entry-chip entry-chip-gold">{{ job }}</span>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- links for post-secondary options -->
+        <div class="career-detail-block">
+          <div class="detail-label">Post-Secondary Options &amp; Resources</div>
+          <div class="resource-links">
+            {% for name, url in career.links %}
+            <a href="{{ url }}" target="_blank" class="resource-link" style="--rc: {{ persona.color }}">{{ name }} →</a>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- explore further -->
+  <section class="explore-more">
+    <div class="explore-box">
+      <h2>Want to see all 18 career options?</h2>
+      <p>Browse every career across all 6 persona types.</p>
+      <div class="explore-actions">
+        <a href="/explore" class="btn btn-primary">Explore All Careers →</a>
+        <a href="/quiz" class="btn btn-ghost">Retake the Quiz</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>☀︎ Solis • For students who need solace</p>
+  </footer>
+
+  <script>
+    // score bars
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.score-fill').forEach((el, i) => {
+        const target = el.style.width;
+        el.style.width = '0%';
+        setTimeout(() => {
+          el.style.transition = 'width 0.8s cubic-bezier(0.4,0,0.2,1)';
+          el.style.width = target;
+        }, 300 + i * 120);
+      });
+    });
+  </script>
+</body>
+</html>

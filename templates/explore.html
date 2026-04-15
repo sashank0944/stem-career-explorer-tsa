@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solis — Explore Careers</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  
+</head>
+<body class="explore-page">
+
+  <nav class="navbar">
+    <a href="/" class="nav-logo">☀︎ Solis</a>
+    <a href="/quiz" class="btn btn-primary btn-sm">Take the Quiz →</a>
+  </nav>
+
+  <div class="explore-header">
+    <h1>Explore All <span class="gradient-text">STEM Careers</span></h1>
+    <p>Browse 18 careers across 6 persona types. Filter by type to find what fits you.</p>
+    <div class="filter-chips">
+      <button class="filter-btn active" data-filter="all">All</button>
+      {% for key, p in personas.items() %}
+<button class="filter-btn" data-filter="{{ key }}" style="--fc: {{ p.color }}">
+  <span class="filter-dot"></span> {{ p.name }}
+</button>
+{% endfor %}
+    </div>
+  </div>
+
+  <div class="explore-grid" id="explore-grid">
+    {% for key, p in personas.items() %}
+      {% for ckey in p.careers %}
+        {% set c = careers[ckey] %}
+        <div class="explore-card" data-persona="{{ key }}" style="--ecc: {{ p.color }}">
+          <div class="ec-top">
+            <div class="ec-dot-wrapper">
+              <span class="hpi-dot dot-lg" style="--pc: {{ p.color }}"></span>
+            </div>
+            <span class="ec-persona-tag" style="background: {{ p.color }}22; color: {{ p.color }}">{{ p.name }}</span>
+          </div>
+          <h3 class="ec-title">{{ c.title }}</h3>
+          <p class="ec-desc">{{ c.description }}</p>
+          <div class="ec-meta">
+            <span>💰 {{ c.salary }}</span>
+            <span>📈 {{ c.growth }}</span>
+          </div>
+          <div class="ec-roadmap">
+            {% for step in c.roadmap %}
+            <div class="ec-step">
+              <span class="ec-dot" style="background: {{ p.color }}"></span>
+              <span>{{ step }}</span>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="ec-section">
+            <div class="ec-label">HS Prep</div>
+            <div class="ec-chips">
+              {% for course in c.hs_courses %}<span class="ec-chip">{{ course }}</span>{% endfor %}
+            </div>
+          </div>
+          <div class="ec-section">
+            <div class="ec-label">Skills Needed</div>
+            <div class="ec-chips">
+              {% for skill in c.skills %}<span class="ec-chip">{{ skill }}</span>{% endfor %}
+            </div>
+          </div>
+          <div class="ec-section">
+            <div class="ec-label">Entry Jobs</div>
+            <div class="ec-chips">
+              {% for job in c.entry_jobs %}<span class="ec-chip ec-chip-gold">{{ job }}</span>{% endfor %}
+            </div>
+          </div>
+          <div class="ec-links">
+            {% for name, url in c.links %}
+            <a href="{{ url }}" target="_blank" style="color: {{ p.color }}">{{ name }} →</a>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+
+  <footer class="footer">
+    <p>☀︎ Solis • For students who need solace</p>
+  </footer>
+
+  <script>
+    // js filtering system
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.explore-card').forEach(card => {
+          if (filter === 'all' || card.dataset.persona === filter) {
+            card.style.display = '';
+            card.classList.add('fade-in');
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

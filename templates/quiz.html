@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solis — Quiz</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  
+</head>
+<body class="quiz-page">
+
+  <nav class="navbar navbar-dark">
+    <a href="/" class="nav-logo">☀︎ Solis</a>
+    <div class="progress-text">Question <span id="current-q">1</span> of {{ total }}</div>
+  </nav>
+
+  <div class="quiz-wrapper">
+    <div class="quiz-progress-bar">
+      <div class="quiz-progress-fill" id="progress-fill" style="width: calc(100% / {{ total }})"></div>
+    </div>
+
+    <form action="/submit" method="POST" id="quiz-form">
+      {% for q in questions %}
+      <div class="question-slide {% if loop.first %}active{% endif %}" data-index="{{ loop.index }}" id="q-slide-{{ loop.index }}">
+        <div class="question-emoji">{{ q.emoji }}</div>
+        <div class="question-number">Question {{ loop.index }} of {{ total }}</div>
+        <h2 class="question-text">{{ q.text }}</h2>
+        <div class="options-grid">
+          {% for opt in q.options %}
+          <label class="option-label" for="q{{ q.id }}_{{ loop.index }}">
+            <input type="radio" name="q{{ q.id }}" id="q{{ q.id }}_{{ loop.index }}" value="{{ opt.type }}" class="option-radio" required />
+            <div class="option-card">
+              <span class="option-text">{{ opt.text }}</span>
+              <span class="option-check">✓</span>
+            </div>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+
+      <div class="quiz-nav">
+        <button type="button" class="btn btn-ghost" id="prev-btn" onclick="prevQuestion()" style="display:none">← Back</button>
+        <button type="button" class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Next →</button>
+        <button type="submit" class="btn btn-primary btn-submit" id="submit-btn" style="display:none">See My Results 🎯</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const total = {{ total }};
+    let current = 1;
+
+    function updateUI() { 
+      document.querySelectorAll('.question-slide').forEach(s => s.classList.remove('active', 'exit-left'));
+      const slide = document.getElementById(`q-slide-${current}`);
+      slide.classList.add('active');
+      document.getElementById('current-q').textContent = current;
+      const fill = (current / total) * 100;
+      document.getElementById('progress-fill').style.width = fill + '%';
+      document.getElementById('prev-btn').style.display = current > 1 ? 'inline-flex' : 'none';
+      document.getElementById('next-btn').style.display = current < total ? 'inline-flex' : 'none';
+      document.getElementById('submit-btn').style.display = current === total ? 'inline-flex' : 'none';
+    }
+
+    function nextQuestion() {
+      const slide = document.getElementById(`q-slide-${current}`);
+      const selected = slide.querySelector('input[type="radio"]:checked');
+      if (!selected) {
+        slide.classList.add('shake');
+        setTimeout(() => slide.classList.remove('shake'), 600);
+        showToast('Please pick an answer to continue!'); // warning message
+        return;
+      }
+      if (current < total) {
+        current++;
+        updateUI();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 1) {
+        current--;
+        updateUI();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function showToast(msg) {
+      let t = document.getElementById('toast');
+      if (!t) {
+        t = document.createElement('div');
+        t.id = 'toast';
+        document.body.appendChild(t);
+      }
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // auto-advance on click w/ small delay
+    document.querySelectorAll('.option-radio').forEach(radio => {
+      radio.addEventListener('change', () => {
+        const slide = radio.closest('.question-slide');
+        slide.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+        radio.closest('.option-label').querySelector('.option-card').classList.add('selected');
+        // auto-advance after brief delay
+        setTimeout(() => {
+          if (current < total) nextQuestion();
+        }, 380);
+      });
+    });
+  </script>
+</body>
+</html>
